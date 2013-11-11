@@ -11,10 +11,14 @@ MicroTimer
 配置文件：
 
 ```
+#兼容传统cron，每5分钟调用一次
+*/5 * * * *   ---http://xxxx
 
-*/5 * * * * * *  ---http://xxxx
-*/5 * * * * * *  ---taodian_api://xxxx
-*/5 * * * * * *  ---shell://xxxx
+#扩展秒级别实现，每5秒调用一次
+* * * * * */5  ---taodian_api://xxxx
+
+#支持毫秒级定时，每0.1秒执行一次
+* * * * * * */100  ---shell://xxxx
 
 ```
 
@@ -24,3 +28,15 @@ MicroTimer
 +  有web GUI 可以查看运行状态。
 +  支持作为library 调用
 +  支持扩展schema
+
+```java
+
+new MicroTimer("* * * * * * */100", new Runnable(){
+  public void run(){
+    //do some thing per 0.1s
+  }
+});
+
+```
+
+
